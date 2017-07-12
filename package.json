@@ -1,9 +1,8 @@
 {
   "name": "vue-el-datatables",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Vue2 DataTablse Project",
   "author": "DessLi <li@dess.xyz>",
-  "private": true,
   "scripts": {
     "start": "node build/dev-server.js",
     "build": "node build/build.js",

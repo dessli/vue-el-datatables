@@ -1,5 +1,1 @@
-import DataTables from './src'
-
-export {
-  DataTables
-}
+export { default } from './src'
