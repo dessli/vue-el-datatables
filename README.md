@@ -150,6 +150,24 @@ Vue.component(DataTables.name, DataTables)
     	 	<th>当调用列搜索或表头模糊搜索框时传递，包含两个key：type(搜索裂隙)->fuzzy(模糊搜索),exact(精确搜索)</th>
     	 </tr>
     </table>
+    接口方法返回数据格式：{data: [{prop1: value, prop2: value}], total: 100}
+    <table>
+    	<tr>
+    	 	<th>property</th>
+    	 	<th>Type</th>
+    	 	<th>Desc</th>
+    	 </tr>
+    	 <tr>
+    	 	<th>data</th>
+    	 	<th>Array</th>
+    	 	<th>接口返回数据，格式同tableData</th>
+    	 </tr>
+    	 <tr>
+    	 	<th>total</th>
+    	 	<th>Number</th>
+    	 	<th>通过接口方法返回初始数据时需要（第一次调用需要），分页查询、模糊查询、列查询不需要返回</th>
+    	 </tr>
+    </table>
     </td>
     <td></td>
   </tr>

@@ -120,7 +120,11 @@ export default {
           this.dataStore.add(this.currentPage - 1, this.pageSize, apiRes.data)
           this.useApi = true
           this.data = apiRes.data
-          this.paginationTotal = apiRes.total
+          if (apiRes.total) {
+            this.paginationTotal = apiRes.total
+          } else {
+            this.paginationTotal = this.data.length
+          }
         } else {
           this.$emit('apiError', 'api response type error')
         }
