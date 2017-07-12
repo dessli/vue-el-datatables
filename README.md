@@ -1,6 +1,33 @@
 # Vue2.0 Datatables
 >Based on elemnet-ui, ES6
 
+##Install
+```
+npm install element-ui vue-el-datatables -save
+```
+##Get Started
+```
+import ElementUI from 'element-ui'
+import DataTables from 'vue-el-datatables'
+
+Vue.use(ElementUI)
+Vue.component(DataTables.name, DataTables)
+```
+
+or
+
+```
+import { Row, Col, Card, Table, TableColumn, Input } from 'element-ui'
+import DataTables from 'vue-el-datatables'
+
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Input)
+Vue.component(DataTables.name, DataTables)
+```
+
 ##Usage
 对于服务器接口返回数据形式，数据会建立本地缓存，已获取的分页数据将不会进行重新请求，但为了保证搜索功能数据的完整性，使用搜索时将进行接口请求，而清除搜索条件后表格会自动回到分页缓存数据
 
