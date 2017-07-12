@@ -3,12 +3,12 @@
 
 ![preview](https://raw.githubusercontent.com/Dess-Li/vue-el-datatables/master/assets/demo.png)
 
-##Install
+## Install
 ```
 npm install element-ui vue-el-datatables -save
 ```
-##Get Started
-```
+## Get Started
+```js
 import ElementUI from 'element-ui'
 import DataTables from 'vue-el-datatables'
 
@@ -18,7 +18,7 @@ Vue.component(DataTables.name, DataTables)
 
 or
 
-```
+```js
 import { Row, Col, Card, Table, TableColumn, Input } from 'element-ui'
 import DataTables from 'vue-el-datatables'
 
@@ -30,10 +30,10 @@ Vue.use(Input)
 Vue.component(DataTables.name, DataTables)
 ```
 
-##Usage
+## Usage
 对于服务器接口返回数据形式，数据会建立本地缓存，已获取的分页数据将不会进行重新请求，但为了保证搜索功能数据的完整性，使用搜索时将进行接口请求，而清除搜索条件后表格会自动回到分页缓存数据
 
-```
+```html
 <template>
   <DataTables :columnHead="columnHead" :tableData="tableData" :serverApi="serverApi" :searchBar="true" @apiError="apiError">
     <el-button type="primary" slot="toolBar">add User</el-button>
@@ -44,13 +44,13 @@ Vue.component(DataTables.name, DataTables)
   </DataTables>
 </template>
 ```
-####slot
+#### slot
 >DataTables 内容可使用分发内容
 >toolBar 分发至表格顶部工具区域
 >template 内部分发至表格数据行内容，可通过scope="props"，获取当前行的数据，并进行格式化数据
 
 
-##Attributes
+## Attributes
 <table>
   <tr>
     <th>Property</th>
