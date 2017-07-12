@@ -13,8 +13,7 @@ import DataTables from '@'
 
 export default {
   components: {
-    DataTables,
-    test: ''
+    DataTables
   },
   data () {
     return {
@@ -26,7 +25,7 @@ export default {
         {width: 260, prop: 'sector', label: 'sector', headSearch: true, sortable: true},
         {minWidth: 60, prop: 'action', label: 'action', fixed: 'right', sortable: false, slot: true}
       ],
-      tableData: [{status: 0, id: 1, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 2, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 3, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 4, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 5, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 6, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 7, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 8, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 9, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 10, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 11, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 12, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 13, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 14, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 15, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 16, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 17, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 18, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}]
+      tableData: [{status: 0, id: 1, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 2, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 3, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 4, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 5, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 6, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 7, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 8, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 9, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 10, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 11, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 12, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 13, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 14, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 15, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 16, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 17, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 18, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}]
     }
   },
   methods: {
@@ -34,25 +33,24 @@ export default {
       console.log(msg)
     },
     serverApi (args) {
-      console.log(args)
       if (args.offset >= 10 && args.offset < 20) {
-        return {data: [{status: 0, id: 11, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 12, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 13, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 14, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 15, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 16, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 17, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 18, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 19, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'},{status: 0, id: 20, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
-      } else if (args.offset >= 20 ) { 
-        return {data: [{status: 0, id: 21, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 22, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 23, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 24, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 25, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
+        return {data: [{status: 0, id: 11, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 12, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 13, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 14, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 15, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 16, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 17, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 18, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 19, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 0, id: 20, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
+      } else if (args.offset >= 20) {
+        return {data: [{status: 0, id: 21, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 22, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 23, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 24, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 25, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
       } else {
-        return {data: [{status: 0, id: 1, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 2, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 3, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 4, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 5, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 6, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 7, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 8, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'},{status: 0, id: 9, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'},{status: 0, id: 10, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
+        return {data: [{status: 0, id: 1, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 2, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 3, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 4, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 5, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 6, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 7, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 8, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 9, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 0, id: 10, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
       }
     },
     formatStatus (status) {
-        switch (status) {
-          case 0:
-            return ['text-accent', 'start']
-          case 1:
-            return ['text-accent', 'end']
-          default:
-            return ['text-accent', 'unknow']
-        }
+      switch (status) {
+        case 0:
+          return ['text-accent', 'start']
+        case 1:
+          return ['text-accent', 'end']
+        default:
+          return ['text-accent', 'unknow']
       }
+    }
   }
 }
 </script>
