@@ -1,6 +1,8 @@
 # Vue2.0 Datatables
 >Based on elemnet-ui, ES6
 
+![preview](https://raw.githubusercontent.com/Dess-Li/vue-el-datatables/master/assets/demo.png)
+
 ##Install
 ```
 npm install element-ui vue-el-datatables -save
