@@ -70,6 +70,11 @@ Vue.component(DataTables.name, DataTables)
     	 	<th>Desc</th>
     	 </tr>
     	 <tr>
+    	 	<th>minWidth</th>
+    	 	<th>Number</th>
+    	 	<th>最小列宽度</th>
+    	 </tr>
+    	 <tr>
     	 	<th>width</th>
     	 	<th>Number</th>
     	 	<th>列宽度</th>
@@ -176,6 +181,24 @@ Vue.component(DataTables.name, DataTables)
     <td>Boolean</td>
     <td>是否显示模糊搜索框</td>
     <td>false</td>
+  </tr>
+  <tr>
+    <td>rowClick</td>
+    <td>Function</td>
+    <td>行点击事件，见element-ui文档</td>
+    <td>() => {}</td>
+  </tr>
+  <tr>
+    <td>rowContextmenu</td>
+    <td>Function</td>
+    <td>行右键点击事件，见element-ui文档</td>
+    <td>() => {}</td>
+  </tr>
+  <tr>
+    <td>rowDblclick</td>
+    <td>Function</td>
+    <td>行双击事件，见element-ui文档</td>
+    <td>() => {}</td>
   </tr>
   <tr>
     <td>apiError</td>
