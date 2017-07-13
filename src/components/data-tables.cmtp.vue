@@ -2,7 +2,12 @@
   <div style="padding: 25px;">
       <DataTableToolBar :searchBar="searchBar" @query="toolBarSerachQuery"><slot name="toolBar"></slot></DataTableToolBar>
       <el-row>
-        <el-table class="mb-12" :data="viewTableData" stripe highlight-current-row @sort-change="typeof handleSort === 'function' ? handleSort : undefined">
+        <el-table class="mb-12" :data="viewTableData" stripe highlight-current-row
+        @sort-change="sortChange"
+        @row-click="rowClick"
+        @row-contextmenu="rowContextmenu"
+        @row-dblclick="rowDblclick"
+        >
           <el-table-column v-for="(item, index) in columnHead" :key="index"
           :fixed="item.fixed"
           :width="item.width?item.width:''"
@@ -50,6 +55,18 @@ export default {
       type: Array,
       default: () => { return [] }
     },
+    rowClick: {
+      type: Function,
+      default: () => { }
+    },
+    rowContextmenu: {
+      type: Function,
+      default: () => { }
+    },
+    rowDblclick: {
+      type: Function,
+      default: () => { }
+    },
     tableData: {
       type: Array,
       default: () => { return [] }
@@ -58,8 +75,9 @@ export default {
       type: Array,
       default: () => { return [10, 50, 100] }
     },
-    handleSort: {
-      type: Function
+    sortChange: {
+      type: Function,
+      default: () => { }
     }
   },
   data () {

@@ -1,5 +1,14 @@
 <template>
-  <DataTables :columnHead="columnHead" :tableData="tableData" :serverApi="serverApi" :searchBar="true" @apiError="apiError">
+  <DataTables
+  :columnHead="columnHead"
+  :tableData="tableData"
+  :serverApi="serverApi"
+  :searchBar="true"
+  :sortChange="sortChange"
+  :rowClick="rowClick"
+  :rowContextmenu="rowContextmenu"
+  :rowDblclick="rowDblclick"
+  @apiError="apiError">
     <el-button type="primary" slot="toolBar">add User</el-button>
     <template scope="props">
       <el-button v-if="props.columnID === 'action'" @click.stop="apiError(props.ev.row.id)">Edit</el-button>
@@ -31,6 +40,18 @@ export default {
   methods: {
     apiError (msg) {
       console.log(msg)
+    },
+    sortChange ({ column, prop, order }) {
+      console.log('sortChange')
+    },
+    rowClick (row, event, column) {
+      console.log('rowClick')
+    },
+    rowContextmenu (row, event) {
+      console.log('rowContextmenu')
+    },
+    rowDblclick (row, event) {
+      console.log('rowDblclick')
     },
     serverApi (args) {
       if (args.offset >= 10 && args.offset < 20) {
