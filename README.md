@@ -177,6 +177,12 @@ Vue.component(DataTables.name, DataTables)
     <td></td>
   </tr>
   <tr>
+    <td>useStore</td>
+    <td>Boolean</td>
+    <td>是否使用缓存模式</td>
+    <td>false</td>
+  </tr>
+  <tr>
     <td>searchBar</td>
     <td>Boolean</td>
     <td>是否显示模糊搜索框</td>

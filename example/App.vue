@@ -8,6 +8,7 @@
   :rowClick="rowClick"
   :rowContextmenu="rowContextmenu"
   :rowDblclick="rowDblclick"
+  :useStore="false"
   @apiError="apiError">
     <el-button type="primary" slot="toolBar">add User</el-button>
     <template scope="props">
@@ -54,6 +55,7 @@ export default {
       console.log('rowDblclick')
     },
     serverApi (args) {
+      console.log('get server data')
       if (args.offset >= 10 && args.offset < 20) {
         return {data: [{status: 0, id: 11, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 12, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 13, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 14, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 15, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 16, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 17, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 18, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 19, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 0, id: 20, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
       } else if (args.offset >= 20) {

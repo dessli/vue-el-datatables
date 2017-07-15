@@ -5,3 +5,8 @@
 
 - 添加行点击事件
 - 修复sort-change事件绑定，调整handelSort属性为sortChange
+
+### 0.2.7
+*2017-07-15*
+
+- 添加useStore参数，用于控制是否启用本地缓存模式，如果选择false，则每个分页都会调用服务器接口

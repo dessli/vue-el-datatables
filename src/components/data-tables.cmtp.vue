@@ -44,6 +44,10 @@ export default {
     serverApi: {
       type: Function
     },
+    useStore: {
+      type: Boolean,
+      default: false
+    },
     userStore: {
       type: Object
     },
@@ -168,7 +172,11 @@ export default {
       get: function () {
         if (!this.fromSearchFlg) {
           if (this.useApi) {
-            return this.dataStore.get(this.currentPage - 1, this.pageSize)[1]
+            if (this.useStore) {
+              return this.dataStore.get(this.currentPage - 1, this.pageSize)[1]
+            } else {
+              return this.data
+            }
           } else {
             return this.data.slice(this.getViewRange[0], this.getViewRange[1])
           }
@@ -269,7 +277,11 @@ export default {
       }
       if (apiRes) {
         if (Object.prototype.toString.call(apiRes.data) === '[object Array]') {
-          this.dataStore.add(currentPage, this.pageSize, apiRes.data)
+          if (this.useStore) {
+            this.dataStore.add(currentPage, this.pageSize, apiRes.data)
+          } else {
+            this.data = apiRes.data
+          }
         } else {
           this.$emit('apiError', 'api return data type error')
           return false
