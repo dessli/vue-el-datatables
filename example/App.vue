@@ -1,7 +1,6 @@
 <template>
   <DataTables
   :columnHead="columnHead"
-  :tableData="tableData"
   :serverApi="serverApi"
   :searchBar="true"
   :sortChange="sortChange"
@@ -20,6 +19,7 @@
 
 <script>
 import DataTables from '@'
+import { getUserList } from './api'
 
 export default {
   components: {
@@ -28,12 +28,11 @@ export default {
   data () {
     return {
       columnHead: [
-        {width: 120, prop: 'status', label: 'Status', slot: true, fixed: 'left', filters: [{ text: 'start', value: 0 }, { text: 'stop', value: 1 }], filterMethod: (value, row) => { return row.status === value }},
-        {width: 260, prop: 'id', label: 'Nickname', headSearch: true, sortable: true},
-        {width: 260, prop: 'username', label: 'username', headSearch: true, sortable: true},
-        {width: 380, prop: 'email', label: 'email', sortable: true},
-        {width: 260, prop: 'sector', label: 'sector', headSearch: true, sortable: true},
-        {minWidth: 60, prop: 'action', label: 'action', fixed: 'right', sortable: false, slot: true}
+        {width: 120, prop: 'uid', label: 'UID', sortable: true, fixed: 'left'},
+        {width: 160, prop: 'nickname', label: '昵称', headSearch: true, sortable: false},
+        {width: 160, prop: 'username', label: '用户名', headSearch: true, sortable: false},
+        {width: 160, prop: 'jobsName', label: '部门名称', sortable: true},
+        {minWidth: 60, prop: 'action', label: '操作', fixed: 'right', sortable: false, slot: true}
       ],
       tableData: [{status: 0, id: 1, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 2, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 3, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 4, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 5, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 6, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 7, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 8, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 9, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 10, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 11, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 12, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 13, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 14, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 15, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 16, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 17, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 18, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}]
     }
@@ -54,14 +53,12 @@ export default {
     rowDblclick (row, event) {
       console.log('rowDblclick')
     },
-    serverApi (args) {
-      console.log('get server data')
-      if (args.offset >= 10 && args.offset < 20) {
-        return {data: [{status: 0, id: 11, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 12, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 13, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 14, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 15, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 16, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 17, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 18, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 19, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 0, id: 20, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
-      } else if (args.offset >= 20) {
-        return {data: [{status: 0, id: 21, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 22, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 23, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 24, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 25, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
+    serverApi: async function (args) {
+      let resUserList = await getUserList()
+      if (resUserList.errcode === 0) {
+        return {data: resUserList.data, total: resUserList.total}
       } else {
-        return {data: [{status: 0, id: 1, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 2, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 3, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 4, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 5, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 6, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 7, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, id: 8, 'name': 222, 'username': 'user2', 'email': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, id: 9, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 0, id: 10, 'name': 111, 'username': 'user1', 'email': 'xxxx@xx.xxx', 'sector': 'sector'}], total: 160}
+        throw resUserList.errmsg
       }
     },
     formatStatus (status) {

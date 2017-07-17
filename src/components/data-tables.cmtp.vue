@@ -234,12 +234,13 @@ export default {
         )
       ])
     },
-    handlePaginationSizeChange (size) {
+    handlePaginationSizeChange: async function (size) {
       if (this.useApi) {
         if (!this.dataStore.isServerEnd) {
           let dataStatus = this.dataStore.get(this.currentPage, size)
           if (!dataStatus[0]) {
-            if (!this.getServerData(this.currentPage, size)) {
+            let serverStatus = await this.getServerData(this.currentPage, size)
+            if (!serverStatus) {
               this.$emit('apiError', 'Can not get more data from server')
             }
           }
@@ -251,12 +252,13 @@ export default {
         this.pageSize = size
       }
     },
-    handlePaginationPageChange (val) {
+    handlePaginationPageChange: async function (val) {
       if (this.useApi) {
         if (!this.dataStore.isServerEnd) {
           let dataStatus = this.dataStore.get(val, this.pageSize)
           if (!dataStatus[0]) {
-            if (!this.getServerData(val, this.pageSize)) {
+            let serverStatus = await this.getServerData(val, this.pageSize)
+            if (!serverStatus) {
               this.$emit('apiError', 'Can not get more data from server')
             }
           }

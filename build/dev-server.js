@@ -8,6 +8,7 @@ if (!process.env.NODE_ENV) {
 var opn = require('opn')
 var path = require('path')
 var express = require('express')
+var bodyParser = require('body-parser')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
@@ -63,6 +64,12 @@ var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsS
 app.use(staticPath, express.static('./static'))
 
 // app.use('/mock', express.static('./mock'))
+// server-response
+app.use(bodyParser.json({limit: '1mb'}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
+app.use('/', require('./server-response'))
 
 var uri = 'http://localhost:' + port
 
