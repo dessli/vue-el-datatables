@@ -214,3 +214,5 @@ Vue.component(DataTables.name, DataTables)
   </tr>
 </table>
 
+## Contact
+The project's website is located at https://github.com/Dess-Li/vue-el-datatables
