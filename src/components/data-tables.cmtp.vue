@@ -294,6 +294,7 @@ export default {
           } else {
             this.data = apiRes.data
           }
+          return true
         } else {
           this.$emit('apiError', 'api return data type error')
           return false
