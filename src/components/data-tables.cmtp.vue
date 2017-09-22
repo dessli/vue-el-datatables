@@ -3,6 +3,7 @@
       <DataTableToolBar :searchBar="searchBar" @query="toolBarSerachQuery"><slot name="toolBar"></slot></DataTableToolBar>
       <el-row>
         <el-table class="mb-12" :data="viewTableData" stripe highlight-current-row
+        v-loading="apiLoading"
         @sort-change="sortChange"
         @row-click="rowClick"
         @row-contextmenu="rowContextmenu"
@@ -86,6 +87,7 @@ export default {
   },
   data () {
     return {
+      apiLoading: false,
       useApi: false,
       isServerEnd: false,
       dataStore: {
@@ -133,7 +135,9 @@ export default {
     if (typeof this.serverApi === 'function') {
       let apiRes
       try {
+        this.apiLoading = true
         apiRes = await this.serverApi({offset: 0, limit: this.pageSize})
+        this.apiLoading = false
       } catch (e) {
         this.$emit('apiError', e)
       }
@@ -239,7 +243,9 @@ export default {
         if (!this.dataStore.isServerEnd) {
           let dataStatus = this.dataStore.get(this.currentPage, size)
           if (!dataStatus[0]) {
+            this.apiLoading = true
             let serverStatus = await this.getServerData(this.currentPage, size)
+            this.apiLoading = false
             if (!serverStatus) {
               this.$emit('apiError', 'Can not get more data from server')
             }
@@ -257,7 +263,9 @@ export default {
         if (!this.dataStore.isServerEnd) {
           let dataStatus = this.dataStore.get(val, this.pageSize)
           if (!dataStatus[0]) {
+            this.apiLoading = true
             let serverStatus = await this.getServerData(val, this.pageSize)
+            this.apiLoading = false
             if (!serverStatus) {
               this.$emit('apiError', 'Can not get more data from server')
             }
@@ -273,7 +281,9 @@ export default {
     getServerData: async function (currentPage, pageSize) {
       let apiRes
       try {
+        this.apiLoading = true
         apiRes = await this.serverApi({offset: (currentPage - 1) * pageSize, limit: pageSize})
+        this.apiLoading = false
       } catch (e) {
         return false
       }
@@ -304,7 +314,9 @@ export default {
       }
       if (this.useApi) {
         if (canSearch) {
+          this.apiLoading = true
           let apiRes = await this.querySearchApi({type: 'exact', searchItem})
+          this.apiLoading = false
           if (apiRes !== false) {
             this.viewTableData = apiRes
           } else {
@@ -336,7 +348,9 @@ export default {
         return
       }
       if (this.useApi) {
+        this.apiLoading = true
         let apiRes = await this.querySearchApi({type: 'fuzzy', query})
+        this.apiLoading = false
         if (apiRes !== false) {
           this.viewTableData = apiRes
         } else {
@@ -360,7 +374,9 @@ export default {
     querySearchApi: async function (search) {
       let apiRes
       try {
+        this.apiLoading = true
         apiRes = await this.serverApi({offset: (this.currentPage - 1) * this.pageSize, limit: this.pageSize, search})
+        this.apiLoading = false
       } catch (e) {
         this.$emit('apiError', 'api error')
         return false
