@@ -90,6 +90,7 @@ export default {
       apiLoading: false,
       useApi: false,
       isServerEnd: false,
+      lockAssociationQuery: false,
       dataStore: {
         data: [],
         area: [0, 0],
@@ -239,12 +240,16 @@ export default {
       ])
     },
     handlePaginationSizeChange: async function (size) {
+      if (this.lockAssociationQuery) {
+        return
+      }
       if (this.useApi) {
         if (!this.dataStore.isServerEnd) {
           let dataStatus = this.dataStore.get(this.currentPage, size)
           if (!dataStatus[0]) {
             this.apiLoading = true
-            let serverStatus = await this.getServerData(this.currentPage, size)
+            this.lockAssociationQuery = true
+            let serverStatus = await this.getServerData(1, size)
             this.apiLoading = false
             if (!serverStatus) {
               this.$emit('apiError', 'Can not get more data from server')
@@ -254,16 +259,21 @@ export default {
           this.paginationTotal = this.dataStore.data.length
         }
         this.pageSize = size
+        this.lockAssociationQuery = false
       } else {
         this.pageSize = size
       }
     },
     handlePaginationPageChange: async function (val) {
+      if (this.lockAssociationQuery) {
+        return
+      }
       if (this.useApi) {
         if (!this.dataStore.isServerEnd) {
           let dataStatus = this.dataStore.get(val, this.pageSize)
           if (!dataStatus[0]) {
             this.apiLoading = true
+            this.lockAssociationQuery = true
             let serverStatus = await this.getServerData(val, this.pageSize)
             this.apiLoading = false
             if (!serverStatus) {
@@ -274,6 +284,7 @@ export default {
           this.paginationTotal = this.dataStore.data.length
         }
         this.currentPage = val
+        this.lockAssociationQuery = false
       } else {
         this.currentPage = val
       }

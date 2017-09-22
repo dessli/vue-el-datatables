@@ -54,7 +54,8 @@ export default {
       console.log('rowDblclick')
     },
     serverApi: async function (args) {
-      let resUserList = await getUserList()
+      console.log(args);
+      let resUserList = await getUserList(args.offset, args.limit, args.search)
       if (resUserList.errcode === 0) {
         return {data: resUserList.data, total: resUserList.total}
       } else {
