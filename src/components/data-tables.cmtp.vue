@@ -128,7 +128,8 @@ export default {
       data: [],
       searchToralCache: 0,
       fromSearchFlg: false,
-      searchData: []
+      searchData: [],
+      searchItem: {}
     }
   },
   beforeMount: async function () {
@@ -249,7 +250,9 @@ export default {
           if (!dataStatus[0]) {
             this.apiLoading = true
             this.lockAssociationQuery = true
-            let serverStatus = await this.getServerData(1, size)
+            this.currentPage = 1
+            this.pageSize = size
+            let serverStatus = await this.getData()
             this.apiLoading = false
             if (!serverStatus) {
               this.$emit('apiError', 'Can not get more data from server')
@@ -258,7 +261,6 @@ export default {
         } else {
           this.paginationTotal = this.dataStore.data.length
         }
-        this.pageSize = size
         this.lockAssociationQuery = false
       } else {
         this.pageSize = size
@@ -274,7 +276,8 @@ export default {
           if (!dataStatus[0]) {
             this.apiLoading = true
             this.lockAssociationQuery = true
-            let serverStatus = await this.getServerData(val, this.pageSize)
+            this.currentPage = val
+            let serverStatus = await this.getData()
             this.apiLoading = false
             if (!serverStatus) {
               this.$emit('apiError', 'Can not get more data from server')
@@ -289,32 +292,6 @@ export default {
         this.currentPage = val
       }
     },
-    getServerData: async function (currentPage, pageSize) {
-      let apiRes
-      try {
-        this.apiLoading = true
-        apiRes = await this.serverApi({offset: (currentPage - 1) * pageSize, limit: pageSize})
-        this.apiLoading = false
-      } catch (e) {
-        return false
-      }
-      if (apiRes) {
-        if (Object.prototype.toString.call(apiRes.data) === '[object Array]') {
-          if (this.useStore) {
-            this.dataStore.add(currentPage, this.pageSize, apiRes.data)
-          } else {
-            this.data = apiRes.data
-          }
-          return true
-        } else {
-          this.$emit('apiError', 'api return data type error')
-          return false
-        }
-      } else {
-        this.$emit('apiError', 'api error')
-        return false
-      }
-    },
     handleHeadSearch: async function () {
       let canSearch = false
       let searchItem = {}
@@ -324,34 +301,32 @@ export default {
           canSearch = true
         }
       }
+      if (!canSearch) {
+        this.searchItem = {}
+      }
       if (this.useApi) {
-        if (canSearch) {
-          this.apiLoading = true
-          let apiRes = await this.querySearchApi({type: 'exact', searchItem})
-          this.apiLoading = false
-          if (apiRes !== false) {
-            this.viewTableData = apiRes
-          } else {
-            this.viewTableData = []
-          }
-        } else {
-          this.fromSearch = false
+        this.searchItem = {type: 'exact', searchItem}
+        this.lockAssociationQuery = true
+        this.currentPage = 1
+        const serverStatus = await this.getData()
+        if (!serverStatus) {
+          this.$emit('apiError', 'Can not get more data from server')
         }
+        this.lockAssociationQuery = false
       } else {
-        if (canSearch) {
-          this.viewTableData = this.data.filter(item => {
-            for (let i in searchItem) {
-              if (searchItem[i] !== '') {
-                if (item[i].toString() !== searchItem[i]) {
-                  return false
-                }
+        if (!canSearch) {
+          return false
+        }
+        this.viewTableData = this.data.filter(item => {
+          for (let i in searchItem) {
+            if (searchItem[i] !== '') {
+              if (item[i].toString() !== searchItem[i]) {
+                return false
               }
             }
-            return true
-          })
-        } else {
-          this.fromSearch = false
-        }
+          }
+          return true
+        })
       }
     },
     toolBarSerachQuery: async function (query) {
@@ -359,43 +334,59 @@ export default {
         this.fromSearch = false
         return
       }
-      if (this.useApi) {
-        this.apiLoading = true
-        let apiRes = await this.querySearchApi({type: 'fuzzy', query})
-        this.apiLoading = false
-        if (apiRes !== false) {
-          this.viewTableData = apiRes
-        } else {
-          this.viewTableData = []
+      let canSearch = false
+      let searchItem = {}
+      for (let i in this.headSearchList) {
+        if (this.headSearchList[i] !== '') {
+          searchItem[i] = this.headSearchList[i]
+          canSearch = true
         }
+      }
+      if (!canSearch) {
+        this.searchItem = {}
+      }
+      if (this.useApi) {
+        this.searchItem = {type: 'fuzzy', query}
+        this.lockAssociationQuery = true
+        this.currentPage = 1
+        const serverStatus = await this.getData()
+        if (!serverStatus) {
+          this.$emit('apiError', 'Can not get more data from server')
+        }
+        this.lockAssociationQuery = false
       } else {
-        let flg = false
+        if (!canSearch) {
+          return false
+        }
         this.viewTableData = this.data.filter(item => {
-          flg = false
           for (let i in this.columnHead) {
             if (item[this.columnHead[i].prop]) {
               if (item[this.columnHead[i].prop].toString().indexOf(query) !== -1) {
-                flg = true
+                return true
               }
             }
           }
-          return flg
+          return false
         })
       }
     },
-    querySearchApi: async function (search) {
+    getData: async function () {
       let apiRes
       try {
         this.apiLoading = true
-        apiRes = await this.serverApi({offset: (this.currentPage - 1) * this.pageSize, limit: this.pageSize, search})
+        apiRes = await this.serverApi({offset: (this.currentPage - 1) * this.pageSize, limit: this.pageSize, search: this.searchItem})
         this.apiLoading = false
       } catch (e) {
-        this.$emit('apiError', 'api error')
         return false
       }
       if (apiRes) {
         if (Object.prototype.toString.call(apiRes.data) === '[object Array]') {
-          return apiRes.data
+          if (this.useStore) {
+            this.dataStore.add(this.currentPage, this.pageSize, apiRes.data)
+          } else {
+            this.data = apiRes.data
+          }
+          return true
         } else {
           this.$emit('apiError', 'api return data type error')
           return false
