@@ -129,7 +129,8 @@ export default {
       searchToralCache: 0,
       fromSearchFlg: false,
       searchData: [],
-      searchItem: {}
+      searchItem: {},
+      cleanSearch: false
     }
   },
   beforeMount: async function () {
@@ -170,9 +171,13 @@ export default {
     },
     viewTableData: {
       set: function (searchData) {
-        console.log(searchData)
         this.searchData = searchData
-        this.fromSearch = true
+        if (this.cleanSearch) {
+          this.fromSearch = false
+          this.cleanSearch = false
+        } else {
+          this.fromSearch = true
+        }
         this.paginationTotal = searchData.length
       },
       get: function () {
@@ -315,6 +320,8 @@ export default {
         this.lockAssociationQuery = false
       } else {
         if (!canSearch) {
+          this.cleanSearch = true
+          this.viewTableData = this.tableData
           return false
         }
         this.viewTableData = this.data.filter(item => {
@@ -331,19 +338,10 @@ export default {
     },
     toolBarSerachQuery: async function (query) {
       if (query === '') {
-        this.fromSearch = false
-        return
-      }
-      let canSearch = false
-      let searchItem = {}
-      for (let i in this.headSearchList) {
-        if (this.headSearchList[i] !== '') {
-          searchItem[i] = this.headSearchList[i]
-          canSearch = true
-        }
-      }
-      if (!canSearch) {
+        this.cleanSearch = true
+        this.viewTableData = this.tableData
         this.searchItem = {}
+        return
       }
       if (this.useApi) {
         this.searchItem = {type: 'fuzzy', query}
@@ -355,9 +353,6 @@ export default {
         }
         this.lockAssociationQuery = false
       } else {
-        if (!canSearch) {
-          return false
-        }
         this.viewTableData = this.data.filter(item => {
           for (let i in this.columnHead) {
             if (item[this.columnHead[i].prop]) {
