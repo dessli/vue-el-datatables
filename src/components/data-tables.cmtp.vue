@@ -33,8 +33,6 @@
 <script>
 import DataTableToolBar from './tool-bar.cmtp'
 
-let self
-
 export default {
   name: 'DataTables',
   components: {
@@ -133,7 +131,6 @@ export default {
     }
   },
   beforeMount: async function () {
-    self = this
     if (typeof this.serverApi === 'function') {
       let apiRes
       try {
@@ -199,41 +196,6 @@ export default {
     }
   },
   methods: {
-    renderHeaderSearch (h, {column}) {
-      if (this.headSearchList[column.property] === undefined) {
-        this.headSearchList[column.property] = ''
-      }
-      console.log('renderHeaderSearch', column.property)
-      return h('el-col', { }, [
-        h('div', column.label),
-        h('el-input', {
-          attrs: {placeholder: 'Search', id: 'vue-el-datatables_' + column.property},
-          nativeOn: {
-            click: () => {
-              event.stopPropagation()
-            }
-          },
-          domProps: {
-            value: this.headSearchList[column.property]
-          },
-          on: {
-            input: () => {
-              this.headSearchList[column.property] = event.target.value
-              this.$emit('input', event.target.value)
-            }
-          }},
-          [
-            h('el-button', {
-              attrs: {slot: 'append', icon: 'search'},
-              slot: 'append',
-              on: {
-                'click': () => { self.handleHeadSearch() }
-              }
-            })
-          ]
-        )
-      ])
-    },
     handlePaginationSizeChange: async function (size) {
       if (this.lockAssociationQuery) {
         return
