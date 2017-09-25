@@ -73,6 +73,11 @@ export default {
       }
       console.log(searchItemData)
       this.$emit('queryItem', {status: canSearch, data: searchItemData})
+    },
+    cleanItemSearch () {
+      for (let i in this.searchItem) {
+        this.searchItem[i] = ''
+      }
     }
   }
 }

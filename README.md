@@ -212,7 +212,15 @@ Vue.component(DataTables.name, DataTables)
     <td>监控数据表调用接口返回错误结果,msg => {console.log(msg)}</td>
     <td></td>
   </tr>
+  <tr>
+    <td>reloadTable</td>
+    <td>Function</td>
+    <td>刷新表格数据，通过ref调用</td>
+    <td></td>
+  </tr>
 </table>
 
 ## Contact
 The project's website is located at https://github.com/Dess-Li/vue-el-datatables
+
+

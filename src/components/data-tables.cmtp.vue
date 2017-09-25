@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 25px;">
-      <DataTableToolBar :searchBar="searchBar" :columnHead="columnHead" @query="toolBarSerachQuery" @queryItem="toolBarItemSerachQuery"><slot name="toolBar"></slot></DataTableToolBar>
+      <DataTableToolBar ref="toolBar" :searchBar="searchBar" :columnHead="columnHead" @query="toolBarSerachQuery" @queryItem="toolBarItemSerachQuery"><slot name="toolBar"></slot></DataTableToolBar>
       <el-row>
         <el-table class="mb-12" :data="viewTableData" stripe highlight-current-row
         v-loading="apiLoading"
@@ -306,10 +306,7 @@ export default {
       }
     },
     reloadTable: async function () {
-      for (let i in this.headSearchList) {
-        this.headSearchList[i] = ''
-        this.$el.querySelector('#vue-el-datatables_' + i).getElementsByTagName('input')[0].value = ''
-      }
+      this.$refs.toolBar.cleanItemSearch()
       if (this.useApi) {
         this.searchItem = {}
         this.lockAssociationQuery = true
@@ -325,14 +322,6 @@ export default {
         this.viewTableData = this.tableData
         this.searchItem = {}
       }
-      this.cleanTableSearchValue()
-    },
-    cleanTableSearchValue () {
-      for (let i in this.headSearchList) {
-        this.headSearchList[i] = ''
-        this.$el.querySelector('#vue-el-datatables_' + i).getElementsByTagName('input')[0].value = ''
-      }
-      console.log(1111)
     },
     getData: async function () {
       let apiRes
