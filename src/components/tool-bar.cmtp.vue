@@ -64,14 +64,13 @@ export default {
     },
     handleItemClick () {
       let canSearch = false
-      let searchItemData = []
+      let searchItemData = {}
       for (let i in this.searchItem) {
         if (this.searchItem[i] !== '') {
           searchItemData[i] = this.searchItem[i]
           canSearch = true
         }
       }
-      console.log(searchItemData)
       this.$emit('queryItem', {status: canSearch, data: searchItemData})
     },
     cleanItemSearch () {

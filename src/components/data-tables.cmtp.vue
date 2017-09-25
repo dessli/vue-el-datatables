@@ -249,6 +249,9 @@ export default {
       }
     },
     toolBarItemSerachQuery: async function ({status, data}) {
+      if (!status) {
+        return false
+      }
       if (this.useApi) {
         this.searchItem = {type: 'exact', data}
         this.lockAssociationQuery = true

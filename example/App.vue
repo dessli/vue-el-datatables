@@ -3,7 +3,7 @@
     <DataTables
     ref="datatables"
     :columnHead="columnHead"
-    :tableData="tableData"
+    :serverApi="serverApi"
     :searchBar="true"
     :sortChange="sortChange"
     :rowClick="rowClick"
@@ -58,7 +58,7 @@ export default {
       console.log('rowDblclick')
     },
     serverApi: async function (args) {
-      console.log(args);
+      console.log(args, 'serverApi args');
       let resUserList = await getUserList(args.offset, args.limit, args.search)
       if (resUserList.errcode === 0) {
         return {data: resUserList.data, total: resUserList.total}
