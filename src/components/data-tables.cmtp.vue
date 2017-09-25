@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 25px;">
-      <DataTableToolBar :searchBar="searchBar" @query="toolBarSerachQuery"><slot name="toolBar"></slot></DataTableToolBar>
+      <DataTableToolBar :searchBar="searchBar" :columnHead="columnHead" @query="toolBarSerachQuery" @queryItem="toolBarItemSerachQuery"><slot name="toolBar"></slot></DataTableToolBar>
       <el-row>
         <el-table class="mb-12" :data="viewTableData" stripe highlight-current-row
         v-loading="apiLoading"
@@ -9,7 +9,7 @@
         @row-contextmenu="rowContextmenu"
         @row-dblclick="rowDblclick"
         >
-          <el-table-column v-for="(item, index) in columnHead" :key="index"
+        <el-table-column v-for="(item, index) in columnHead" :key="index"
           :fixed="item.fixed"
           :width="item.width?item.width:''"
           :min-width="item.minWidth?item.minWidth:''"
@@ -20,7 +20,6 @@
           :sort-method="item.sortMethod?item.sortMethod:undefined"
           :filters="item.filters?item.filters:undefined"
           :filter-method="typeof item.filterMethod === 'function' ? item.filterMethod : undefined"
-          :render-header="item.headSearch ? renderHeaderSearch : undefined"
           ><template scope="scope"><slot :columnID="item.prop" :ev="scope" v-if="item.slot"></slot>{{!item.slot ? scope.row[item.prop] : ''}}</template></el-table-column>
         </el-table>
         <div class="vue-el-pagination-wrap">
@@ -173,10 +172,12 @@ export default {
       set: function (searchData) {
         this.searchData = searchData
         if (this.cleanSearch) {
-          this.fromSearch = false
+          this.fromSearchFlg = false
           this.cleanSearch = false
+          this.paginationTotal = this.searchToralCache
         } else {
-          this.fromSearch = true
+          this.fromSearchFlg = true
+          this.searchToralCache = this.paginationTotal
         }
         this.paginationTotal = searchData.length
       },
@@ -195,19 +196,6 @@ export default {
           return this.searchData
         }
       }
-    },
-    fromSearch: {
-      set: function (val) {
-        if (val) {
-          this.searchToralCache = this.paginationTotal
-        } else {
-          this.paginationTotal = this.searchToralCache
-        }
-        this.fromSearchFlg = val
-      },
-      get: function () {
-        return this.fromSearchFlg
-      }
     }
   },
   methods: {
@@ -215,22 +203,23 @@ export default {
       if (this.headSearchList[column.property] === undefined) {
         this.headSearchList[column.property] = ''
       }
+      console.log('renderHeaderSearch', column.property)
       return h('el-col', { }, [
         h('div', column.label),
         h('el-input', {
-          attrs: {placeholder: 'Search'},
-          domProps: {
-            value: self.headSearchList[column.property]
-          },
+          attrs: {placeholder: 'Search', id: 'vue-el-datatables_' + column.property},
           nativeOn: {
             click: () => {
               event.stopPropagation()
             }
           },
+          domProps: {
+            value: this.headSearchList[column.property]
+          },
           on: {
             input: () => {
-              self.headSearchList[column.property] = event.target.value
-              self.$emit('el-input', event.target.value)
+              this.headSearchList[column.property] = event.target.value
+              this.$emit('input', event.target.value)
             }
           }},
           [
@@ -297,20 +286,9 @@ export default {
         this.currentPage = val
       }
     },
-    handleHeadSearch: async function () {
-      let canSearch = false
-      let searchItem = {}
-      for (let i in this.headSearchList) {
-        if (this.headSearchList[i] !== '') {
-          searchItem[i] = this.headSearchList[i]
-          canSearch = true
-        }
-      }
-      if (!canSearch) {
-        this.searchItem = {}
-      }
+    toolBarItemSerachQuery: async function ({status, data}) {
       if (this.useApi) {
-        this.searchItem = {type: 'exact', searchItem}
+        this.searchItem = {type: 'exact', data}
         this.lockAssociationQuery = true
         this.currentPage = 1
         const serverStatus = await this.getData()
@@ -319,15 +297,15 @@ export default {
         }
         this.lockAssociationQuery = false
       } else {
-        if (!canSearch) {
+        if (!status) {
           this.cleanSearch = true
           this.viewTableData = this.tableData
           return false
         }
         this.viewTableData = this.data.filter(item => {
-          for (let i in searchItem) {
-            if (searchItem[i] !== '') {
-              if (item[i].toString() !== searchItem[i]) {
+          for (let i in data) {
+            if (data[i] !== '') {
+              if (item[i].toString() !== data[i]) {
                 return false
               }
             }
@@ -364,6 +342,35 @@ export default {
           return false
         })
       }
+    },
+    reloadTable: async function () {
+      for (let i in this.headSearchList) {
+        this.headSearchList[i] = ''
+        this.$el.querySelector('#vue-el-datatables_' + i).getElementsByTagName('input')[0].value = ''
+      }
+      if (this.useApi) {
+        this.searchItem = {}
+        this.lockAssociationQuery = true
+        this.currentPage = 1
+        this.pageSize = this.pageSizeList[0]
+        const serverStatus = await this.getData()
+        if (!serverStatus) {
+          this.$emit('apiError', 'Can not get more data from server')
+        }
+        this.lockAssociationQuery = false
+      } else {
+        this.cleanSearch = true
+        this.viewTableData = this.tableData
+        this.searchItem = {}
+      }
+      this.cleanTableSearchValue()
+    },
+    cleanTableSearchValue () {
+      for (let i in this.headSearchList) {
+        this.headSearchList[i] = ''
+        this.$el.querySelector('#vue-el-datatables_' + i).getElementsByTagName('input')[0].value = ''
+      }
+      console.log(1111)
     },
     getData: async function () {
       let apiRes

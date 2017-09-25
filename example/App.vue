@@ -1,20 +1,24 @@
 <template>
-  <DataTables
-  :columnHead="columnHead"
-  :tableData="tableData"
-  :searchBar="true"
-  :sortChange="sortChange"
-  :rowClick="rowClick"
-  :rowContextmenu="rowContextmenu"
-  :rowDblclick="rowDblclick"
-  :useStore="false"
-  @apiError="apiError">
-    <el-button type="primary" slot="toolBar">add User</el-button>
-    <template scope="props">
-      <el-button v-if="props.columnID === 'action'" @click.stop="apiError(props.ev.row.id)">Edit</el-button>
-      <div v-if="props.columnID === 'status'" :class="formatStatus(props.ev.row.status)[0]">{{formatStatus(props.ev.row.status)[1]}}</div>
-    </template>
-  </DataTables>
+  <div>
+    <DataTables
+    ref="datatables"
+    :columnHead="columnHead"
+    :tableData="tableData"
+    :searchBar="true"
+    :sortChange="sortChange"
+    :rowClick="rowClick"
+    :rowContextmenu="rowContextmenu"
+    :rowDblclick="rowDblclick"
+    :useStore="false"
+    @apiError="apiError">
+      <el-button type="primary" slot="toolBar">add User</el-button>
+      <template scope="props">
+        <el-button v-if="props.columnID === 'action'" @click.stop="apiError(props.ev.row.id)">Edit</el-button>
+        <div v-if="props.columnID === 'status'" :class="formatStatus(props.ev.row.status)[0]">{{formatStatus(props.ev.row.status)[1]}}</div>
+      </template>
+    </DataTables>
+    <el-button type="primary" slot="toolBar" @click="reloadTable">reloadTable</el-button>
+  </div>
 </template>
 
 <script>
@@ -61,6 +65,9 @@ export default {
       } else {
         throw resUserList.errmsg
       }
+    },
+    async reloadTable () {
+      console.log(await this.$refs.datatables.reloadTable())
     },
     formatStatus (status) {
       switch (status) {
