@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 25px;">
-      <DataTableToolBar ref="toolBar" :searchBar="searchBar" :columnHead="columnHead" @query="toolBarSerachQuery" @queryItem="toolBarItemSerachQuery"><slot name="toolBar"></slot></DataTableToolBar>
+      <DataTableToolBar :searchBar="searchBar" :columnHead="columnHead" @query="toolBarSerachQuery" @queryItem="toolBarItemSerachQuery" @reloadSearch="reloadTable"><slot name="toolBar"></slot></DataTableToolBar>
       <el-row>
         <el-table class="mb-12" :data="viewTableData" stripe highlight-current-row
         v-loading="apiLoading"
@@ -282,7 +282,9 @@ export default {
     toolBarSerachQuery: async function (query) {
       if (query === '') {
         this.cleanSearch = true
-        this.viewTableData = this.tableData
+        if (!this.useApi) {
+          this.viewTableData = this.tableData
+        }
         this.searchItem = {}
         return
       }
@@ -309,7 +311,6 @@ export default {
       }
     },
     reloadTable: async function () {
-      this.$refs.toolBar.cleanItemSearch()
       if (this.useApi) {
         this.searchItem = {}
         this.lockAssociationQuery = true
@@ -340,6 +341,11 @@ export default {
           if (this.useStore) {
             this.dataStore.add(this.currentPage, this.pageSize, apiRes.data)
           } else {
+            if (apiRes.total) {
+              this.paginationTotal = apiRes.total
+            } else {
+              this.paginationTotal = apiRes.data.length
+            }
             this.data = apiRes.data
           }
           return true

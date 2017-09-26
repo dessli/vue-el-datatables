@@ -5,19 +5,22 @@
       <slot></slot>
       </el-col>
       <el-col :sm="12" v-if="searchBar">
-        <el-input placeholder="Search" v-model="query"><el-button slot="append" icon="search" @click="handleVagueClick">模糊查询</el-button></el-input>
+        <el-input placeholder="Search" v-model="query"><el-button slot="prepend"  icon="delete" @click="handleReloadClick"></el-button><el-button slot="append" icon="search" @click="handleVagueClick">模糊查询</el-button></el-input>
       </el-col>
     </el-row>
     <el-row type="flex" justify="between" :gutter="12" style="padding-top:1.2em;" v-if="searchHeadItem.length">
-      <el-col :sm="20" >
+      <el-col :sm="16" >
         <el-row type="flex" justify="between" :gutter="12" v-for="(item, index) in searchHeadItem" :key="index" :style="index !==0 ? 'padding-top:1.2em;' : '' ">
           <el-col v-for="(item2, index2) in item" :key="index2">
             <el-input placeholder="Search" v-model="searchItem[item2.prop]"><span slot="prepend">{{item2.label}}</span></el-input>
           </el-col>
         </el-row>
       </el-col>
-      <el-col :sm="4">
-        <el-button icon="search" style="float:right;" @click="handleItemClick">分项查询</el-button>
+      <el-col :sm="8">
+        <el-button-group style="float:right;">
+          <el-button icon="search" type="info" @click="handleItemClick">分项查询</el-button>
+          <el-button icon="delete" type="danger" @click="handleReloadClick">清除查询</el-button>
+        </el-button-group>
       </el-col>
     </el-row>
   </div>
@@ -73,10 +76,11 @@ export default {
       }
       this.$emit('queryItem', {status: canSearch, data: searchItemData})
     },
-    cleanItemSearch () {
+    handleReloadClick () {
       for (let i in this.searchItem) {
         this.searchItem[i] = ''
       }
+      this.$emit('reloadSearch')
     }
   }
 }
