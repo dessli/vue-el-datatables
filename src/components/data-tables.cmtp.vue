@@ -127,7 +127,8 @@ export default {
       searchData: [],
       searchItem: {},
       orderItem: {},
-      cleanSearch: false
+      cleanSearch: false,
+      refreshTotal: false
     }
   },
   beforeMount: async function () {
@@ -331,7 +332,7 @@ export default {
       let apiRes
       try {
         this.apiLoading = true
-        apiRes = await this.serverApi({offset: (this.currentPage - 1) * this.pageSize, limit: this.pageSize, search: this.searchItem, order: this.orderItem})
+        apiRes = await this.serverApi({offset: (this.currentPage - 1) * this.pageSize, limit: this.pageSize, search: this.searchItem, order: this.orderItem, refreshTotal: this.refreshTotal})
         this.apiLoading = false
       } catch (e) {
         return false
@@ -365,6 +366,21 @@ export default {
         }
       }
       this.sortChange()
+    },
+    reload: async function () {
+      if (this.useApi) {
+        this.refreshTotal = true
+        this.lockAssociationQuery = true
+        const serverStatus = await this.getData()
+        if (!serverStatus) {
+          this.$emit('apiError', 'Can not get more data from server')
+        }
+        this.lockAssociationQuery = false
+      } else {
+        this.cleanSearch = true
+        this.viewTableData = this.tableData
+        this.searchItem = {}
+      }
     }
   }
 }

@@ -17,6 +17,7 @@
         <div v-if="props.columnID === 'status'" :class="formatStatus(props.ev.row.status)[0]">{{formatStatus(props.ev.row.status)[1]}}</div>
       </template>
     </DataTables>
+    <el-button @click="reload">Reload</el-button>
   </div>
 </template>
 
@@ -58,12 +59,15 @@ export default {
     },
     serverApi: async function (args) {
       console.log(args, 'serverApi args');
-      let resUserList = await getUserList(args.offset, args.limit, args.search, args.order)
+      let resUserList = await getUserList(args.offset, args.limit, args.search, args.order, args.refreshTotal)
       if (resUserList.errcode === 0) {
         return {data: resUserList.data, total: resUserList.total}
       } else {
         throw resUserList.errmsg
       }
+    },
+    reload () {
+      this.$refs.datatables.reload()
     },
     formatStatus (status) {
       switch (status) {

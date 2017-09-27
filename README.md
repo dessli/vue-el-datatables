@@ -212,6 +212,12 @@ Vue.component(DataTables.name, DataTables)
     <td>监控数据表调用接口返回错误结果,msg => {console.log(msg)}</td>
     <td></td>
   </tr>
+	<tr>
+    <td>reload</td>
+    <td>Functon</td>
+    <td>通过this.$refs['ref'].reload调用，如果是接口模式该方法将重新获取当前页面数据并请求返回数据总数，如果是非接口模式将重载页面并回到第一页</td>
+    <td></td>
+  </tr>
 </table>
 
 ## Contact
