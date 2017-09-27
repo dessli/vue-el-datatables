@@ -31,10 +31,10 @@ export default {
   data () {
     return {
       columnHead: [
-        {width: 120, prop: 'uid', label: 'UID', sortable: true, fixed: 'left'},
+        {width: 120, prop: 'uid', label: 'UID', sortable: 'custom', fixed: 'left'},
         {width: 160, prop: 'nickname', label: '昵称', headSearch: true, sortable: false},
         {width: 160, prop: 'username', label: '用户名', headSearch: true, sortable: false},
-        {width: 160, prop: 'jobsName', label: '部门名称', sortable: true},
+        {width: 160, prop: 'jobsName', label: '部门名称', sortable: 'custom'},
         {minWidth: 60, prop: 'action', label: '操作', fixed: 'right', sortable: false, slot: true}
       ],
       tableData: [{status: 0, uid: 1, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 2, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, uid: 3, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 4, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, uid: 5, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 6, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, uid: 7, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 8, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, uid: 9, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 10, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, uid: 11, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 12, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, uid: 13, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 14, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, uid: 15, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 16, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}, {status: 0, uid: 17, 'nickname': 111, 'username': 'user1', 'jobsName': 'xxxx@xx.xxx', 'sector': 'sector'}, {status: 1, uid: 18, 'nickname': 222, 'username': 'user2', 'jobsName': 'xxxxx@xx.xxx', 'sector': 'sector2'}]
@@ -44,7 +44,7 @@ export default {
     apiError (msg) {
       console.log(msg)
     },
-    sortChange ({ column, prop, order }) {
+    sortChange () {
       console.log('sortChange')
     },
     rowClick (row, event, column) {
@@ -58,7 +58,7 @@ export default {
     },
     serverApi: async function (args) {
       console.log(args, 'serverApi args');
-      let resUserList = await getUserList(args.offset, args.limit, args.search)
+      let resUserList = await getUserList(args.offset, args.limit, args.search, args.order)
       if (resUserList.errcode === 0) {
         return {data: resUserList.data, total: resUserList.total}
       } else {

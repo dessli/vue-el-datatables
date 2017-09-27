@@ -4,7 +4,7 @@
       <el-row>
         <el-table class="mb-12" :data="viewTableData" stripe highlight-current-row
         v-loading="apiLoading"
-        @sort-change="sortChange"
+        @sort-change="sortMethod"
         @row-click="rowClick"
         @row-contextmenu="rowContextmenu"
         @row-dblclick="rowDblclick"
@@ -17,7 +17,6 @@
           :prop="item.prop?item.prop:''"
           :label="item.label?item.label:''"
           :sortable="item.sortable?item.sortable:false"
-          :sort-method="item.sortMethod?item.sortMethod:undefined"
           :filters="item.filters?item.filters:undefined"
           :filter-method="typeof item.filterMethod === 'function' ? item.filterMethod : undefined"
           ><template scope="scope"><slot :columnID="item.prop" :ev="scope" v-if="item.slot"></slot>{{!item.slot ? scope.row[item.prop] : ''}}</template></el-table-column>
@@ -127,6 +126,7 @@ export default {
       fromSearchFlg: false,
       searchData: [],
       searchItem: {},
+      orderItem: {},
       cleanSearch: false
     }
   },
@@ -331,7 +331,7 @@ export default {
       let apiRes
       try {
         this.apiLoading = true
-        apiRes = await this.serverApi({offset: (this.currentPage - 1) * this.pageSize, limit: this.pageSize, search: this.searchItem})
+        apiRes = await this.serverApi({offset: (this.currentPage - 1) * this.pageSize, limit: this.pageSize, search: this.searchItem, order: this.orderItem})
         this.apiLoading = false
       } catch (e) {
         return false
@@ -343,8 +343,6 @@ export default {
           } else {
             if (apiRes.total) {
               this.paginationTotal = apiRes.total
-            } else {
-              this.paginationTotal = apiRes.data.length
             }
             this.data = apiRes.data
           }
@@ -357,6 +355,16 @@ export default {
         this.$emit('apiError', 'api error')
         return false
       }
+    },
+    sortMethod: async function ({ prop, order }) {
+      if (this.useApi) {
+        this.orderItem = { prop, order }
+        const serverStatus = await this.getData()
+        if (!serverStatus) {
+          this.$emit('apiError', 'Can not get more data from server')
+        }
+      }
+      this.sortChange()
     }
   }
 }

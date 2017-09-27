@@ -96,8 +96,8 @@ Vue.component(DataTables.name, DataTables)
     	 </tr>
     	 <tr>
     	 	<th>sortable</th>
-    	 	<th>Boolean</th>
-    	 	<th>是否显示排序按钮</th>
+    	 	<th>Boolean|String</th>
+    	 	<th>是否显示排序按钮,当值为'custom'时，排序将向serverApi传递排序值{prop: 'prop', order: "ascending"}，order值为ascending、descending、null</th>
     	 </tr>
     	 <tr>
     	 	<th>slot</th>
