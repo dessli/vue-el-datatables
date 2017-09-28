@@ -117,7 +117,12 @@ Vue.component(DataTables.name, DataTables)
     	 <tr>
     	 	<th>filterMethod</th>
     	 	<th>Function</th>
-    	 	<th>数据过滤的方法,见element-ui文档</th>
+    	 	<th>数据过滤的方法,见element-ui文档, 当使用接口模式时，请不要传递该方法，组件会自动调用filterChange</th>
+    	 </tr>
+			 <tr>
+    	 	<th>filtersMultiple</th>
+    	 	<th>Boolean</th>
+    	 	<th>数据过滤的选项是否多</th>
     	 </tr>
     	</table>
     </td>

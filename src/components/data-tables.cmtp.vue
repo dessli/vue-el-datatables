@@ -8,6 +8,7 @@
         @row-click="rowClick"
         @row-contextmenu="rowContextmenu"
         @row-dblclick="rowDblclick"
+        @filter-change="filterChange"
         >
         <el-table-column v-for="(item, index) in columnHead" :key="index"
           :fixed="item.fixed"
@@ -16,8 +17,10 @@
           :align="item.align?item.align:'center'"
           :prop="item.prop?item.prop:''"
           :label="item.label?item.label:''"
+          :column-key="item.prop?item.prop:''"
           :sortable="item.sortable?item.sortable:false"
           :filters="item.filters?item.filters:undefined"
+          :filter-multiple="item.filtersMultiple !== undefined ? item.filtersMultiple:undefined"
           :filter-method="typeof item.filterMethod === 'function' ? item.filterMethod : undefined"
           ><template scope="scope"><slot :columnID="item.prop" :ev="scope" v-if="item.slot"></slot>{{!item.slot ? scope.row[item.prop] : ''}}</template></el-table-column>
         </el-table>
@@ -366,6 +369,28 @@ export default {
         }
       }
       this.sortChange()
+    },
+    filterChange: async function (params) {
+      const searchQuery = {}
+      let canQuery = false
+      for (const i in params) {
+        if (params[i].length > 0) {
+          searchQuery[i] = params[i]
+          canQuery = true
+        }
+      }
+      if (canQuery) {
+        this.searchItem = {type: 'exact', data: searchQuery}
+      } else {
+        this.searchItem = {}
+      }
+      this.lockAssociationQuery = true
+      this.currentPage = 1
+      const serverStatus = await this.getData()
+      if (!serverStatus) {
+        this.$emit('apiError', 'Can not get more data from server')
+      }
+      this.lockAssociationQuery = false
     },
     reload: async function () {
       if (this.useApi) {
