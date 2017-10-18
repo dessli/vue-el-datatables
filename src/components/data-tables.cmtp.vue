@@ -22,7 +22,7 @@
           :filters="item.filters?item.filters:undefined"
           :filter-multiple="item.filtersMultiple !== undefined ? item.filtersMultiple:undefined"
           :filter-method="typeof item.filterMethod === 'function' ? item.filterMethod : undefined"
-          ><template scope="scope"><slot :columnID="item.prop" :ev="scope" v-if="item.slot"></slot>{{!item.slot ? scope.row[item.prop] : ''}}</template></el-table-column>
+          ><template slot-scope="scope"><slot :columnID="item.prop" :ev="scope" v-if="item.slot"></slot>{{!item.slot ? scope.row[item.prop] : ''}}</template></el-table-column>
         </el-table>
         <div class="vue-el-pagination-wrap">
           <el-pagination @current-change="handlePaginationPageChange" @size-change="handlePaginationSizeChange" :current-page="currentPage" :page-size="pageSize" :page-sizes="pageSizeList" layout="prev, pager, next, jumper, sizes, ->, total" :total="paginationTotal">
