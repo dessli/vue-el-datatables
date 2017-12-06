@@ -5,14 +5,18 @@
       <slot></slot>
       </el-col>
       <el-col :sm="12" v-if="searchBar">
-        <el-input placeholder="Search" v-model="query"><el-button slot="prepend"  icon="delete" @click="handleReloadClick"></el-button><el-button slot="append" icon="search" @click="handleVagueClick">模糊查询</el-button></el-input>
+        <el-input placeholder="Search" v-model="query"><el-button slot="prepend"  icon="el-icon-refresh" @click="handleReloadClick"></el-button><el-button slot="append" icon="search" @click="handleVagueClick">模糊查询</el-button></el-input>
       </el-col>
     </el-row>
     <el-row type="flex" justify="between" :gutter="12" style="padding-top:1.2em;" v-if="searchHeadItem.length">
       <el-col :sm="16" >
         <el-row type="flex" justify="between" :gutter="12" v-for="(item, index) in searchHeadItem" :key="index" :style="index !==0 ? 'padding-top:1.2em;' : '' ">
           <el-col v-for="(item2, index2) in item" :key="index2">
-            <el-input placeholder="Search" v-model="searchItem[item2.prop]"><span slot="prepend">{{item2.label}}</span></el-input>
+            <div v-if="searchItemType[item2.prop] === 'datetime'" class="el-input el-input-group el-input-group--prepend">
+              <div tabindex="0" class="el-input-group__prepend"><span>{{item2.label}}</span></div>
+              <el-date-picker v-model="searchItem[item2.prop]" type="date" placeholder="Select Date"></el-date-picker>
+            </div>
+            <el-input v-else placeholder="Search" v-model="searchItem[item2.prop]"><span slot="prepend">{{item2.label}}</span></el-input>
           </el-col>
         </el-row>
       </el-col>
@@ -50,6 +54,11 @@ export default {
         }
         this.searchHeadItem[searchHeadItemLength].push(this.columnHead[i])
         this.searchItem[this.columnHead[i].prop] = ''
+        if (this.columnHead[i]['searchType']) {
+          this.searchItemType[this.columnHead[i].prop] = this.columnHead[i]['searchType']
+        } else {
+          this.searchItemType[this.columnHead[i].prop] = 'text'
+        }
         flg++
       }
     }
@@ -58,7 +67,8 @@ export default {
     return {
       query: '',
       searchHeadItem: [],
-      searchItem: {}
+      searchItem: {},
+      searchItemType: {}
     }
   },
   methods: {

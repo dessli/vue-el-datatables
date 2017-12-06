@@ -4,6 +4,8 @@
       <el-row>
         <el-table class="mb-12" :data="viewTableData" stripe highlight-current-row
         v-loading="apiLoading"
+        :border="border"
+        :stripe="stripe"
         @sort-change="sortMethod"
         @row-click="rowClick"
         @row-contextmenu="rowContextmenu"
@@ -41,6 +43,14 @@ export default {
     DataTableToolBar
   },
   props: {
+    border: {
+      type: Boolean,
+      default: false
+    },
+    stripe: {
+      type: Boolean,
+      default: false
+    },
     serverApi: {
       type: Function
     },
