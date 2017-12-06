@@ -11,10 +11,10 @@
     <el-row type="flex" justify="between" :gutter="12" style="padding-top:1.2em;" v-if="searchHeadItem.length">
       <el-col :sm="16" >
         <el-row type="flex" justify="between" :gutter="12" v-for="(item, index) in searchHeadItem" :key="index" :style="index !==0 ? 'padding-top:1.2em;' : '' ">
-          <el-col v-for="(item2, index2) in item" :key="index2">
+          <el-col v-for="(item2, index2) in item" :key="index2" :md="12" :lg="8">
             <div v-if="searchItemType[item2.prop] === 'datetime'" class="el-input el-input-group el-input-group--prepend">
               <div tabindex="0" class="el-input-group__prepend"><span>{{item2.label}}</span></div>
-              <el-date-picker v-model="searchItem[item2.prop]" type="date" placeholder="Select Date"></el-date-picker>
+              <el-date-picker v-model="searchItem[item2.prop]" type="date" placeholder="Select Date" style="width:100%"></el-date-picker>
             </div>
             <el-input v-else placeholder="Search" v-model="searchItem[item2.prop]"><span slot="prepend">{{item2.label}}</span></el-input>
           </el-col>
