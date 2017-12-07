@@ -46,7 +46,7 @@ export default {
   props: {
     defaultSort: {
       type: Object,
-      default: () => {}
+      default: () => { return {} }
     },
     border: {
       type: Boolean,
