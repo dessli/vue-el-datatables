@@ -12,6 +12,7 @@
     :useStore="false"
     :border="true"
     :stripe="true"
+    :defaultSort="{ prop: 'username', order: 'descending' }"
     @apiError="apiError">
       <el-button type="primary" slot="toolBar">add User</el-button>
       <template slot-scope="props">
@@ -36,7 +37,7 @@ export default {
       columnHead: [
         {width: 120, prop: 'uid', label: 'UID', headSearch: true, sortable: 'custom', fixed: 'left'},
         {width: 160, prop: 'nickname', label: '昵称', headSearch: true, searchType: 'datetime', sortable: false},
-        {width: 160, prop: 'username', label: '用户名', headSearch: true, sortable: false},
+        {width: 160, prop: 'username', label: '用户名', headSearch: true, sortable: true},
         {width: 160, prop: 'jobsName', label: '部门名称', headSearch: true, sortable: 'custom'},
         {width: 160, prop: 'status', label: '用户状态', headSearch: true, filters: [{text: '正常', value: 1}, {text: '冻结', value: 0}], filtersMultiple: false},
         {minWidth: 60, prop: 'action', label: '操作', headSearch: true, fixed: 'right', sortable: false, slot: true}

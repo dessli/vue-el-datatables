@@ -6,6 +6,7 @@
         v-loading="apiLoading"
         :border="border"
         :stripe="stripe"
+        :default-sort="defaultSort"
         @sort-change="sortMethod"
         @row-click="rowClick"
         @row-contextmenu="rowContextmenu"
@@ -43,6 +44,10 @@ export default {
     DataTableToolBar
   },
   props: {
+    defaultSort: {
+      type: Object,
+      default: () => {}
+    },
     border: {
       type: Boolean,
       default: false
@@ -147,9 +152,14 @@ export default {
   beforeMount: async function () {
     if (typeof this.serverApi === 'function') {
       let apiRes
+      const mountQuery = {offset: 0, limit: this.pageSize}
+      if (this.defaultSort.prop) {
+        mountQuery.order = this.defaultSort
+        this.orderItem = { prop: this.defaultSort.prop, order: this.defaultSort.order }
+      }
       try {
         this.apiLoading = true
-        apiRes = await this.serverApi({offset: 0, limit: this.pageSize})
+        apiRes = await this.serverApi(mountQuery)
         this.apiLoading = false
       } catch (e) {
         this.$emit('apiError', e)
