@@ -53,7 +53,7 @@ export default {
           this.searchHeadItem[searchHeadItemLength] = []
         }
         this.searchHeadItem[searchHeadItemLength].push(this.columnHead[i])
-        this.searchItem[this.columnHead[i].prop] = ''
+        this.$set(this.searchItem, this.columnHead[i].prop, '')
         if (this.columnHead[i]['searchType']) {
           this.searchItemType[this.columnHead[i].prop] = this.columnHead[i]['searchType']
         } else {
