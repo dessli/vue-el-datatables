@@ -340,6 +340,7 @@ export default {
         this.lockAssociationQuery = true
         this.currentPage = 1
         this.pageSize = this.pageSizeList[0]
+        this.dataStore.isServerEnd = false
         const serverStatus = await this.getData()
         if (!serverStatus) {
           this.$emit('apiError', 'Can not get more data from server')
@@ -416,6 +417,7 @@ export default {
       if (this.useApi) {
         this.refreshTotal = true
         this.lockAssociationQuery = true
+        this.dataStore.isServerEnd = false
         const serverStatus = await this.getData()
         if (!serverStatus) {
           this.$emit('apiError', 'Can not get more data from server')
