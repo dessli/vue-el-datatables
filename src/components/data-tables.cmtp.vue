@@ -14,6 +14,7 @@
         @filter-change="filterChange"
         >
         <el-table-column v-for="(item, index) in columnHead" :key="index"
+          v-if="!item.hide"
           :fixed="item.fixed"
           :width="item.width?item.width:''"
           :min-width="item.minWidth?item.minWidth:''"
