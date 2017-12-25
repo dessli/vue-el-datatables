@@ -395,16 +395,34 @@ export default {
     filterChange: async function (params) {
       const searchQuery = {}
       let canQuery = false
+      let attr = ''
       for (const i in params) {
+        attr = i
         if (params[i].length > 0) {
           searchQuery[i] = params[i]
           canQuery = true
         }
       }
       if (canQuery) {
-        this.searchItem = {type: 'exact', data: searchQuery}
+        if (this.searchItem.data) {
+          if (this.searchItem.type !== 'exact') {
+            this.searchItem = {type: 'exact', data: searchQuery}
+          } else {
+            this.searchItem.data = Object.assign(this.searchItem.data, searchQuery)
+          }
+        } else {
+          this.searchItem = {type: 'exact', data: searchQuery}
+        }
       } else {
-        this.searchItem = {}
+        if (this.searchItem.data) {
+          if (this.searchItem.type === 'exact') {
+            if (this.searchItem.data[attr]) {
+              delete this.searchItem.data[attr]
+            }
+          }
+        } else {
+          this.searchItem = {}
+        }
       }
       this.lockAssociationQuery = true
       this.currentPage = 1
