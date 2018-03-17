@@ -7,6 +7,7 @@
         :border="border"
         :stripe="stripe"
         :default-sort="defaultSort"
+        :row-class-name="rowClassName"
         @sort-change="sortMethod"
         @row-click="rowClick"
         @row-contextmenu="rowContextmenu"
@@ -48,6 +49,10 @@ export default {
     defaultSort: {
       type: Object,
       default: () => { return {} }
+    },
+    rowClassName: {
+      type: String,
+      default: ''
     },
     border: {
       type: Boolean,
